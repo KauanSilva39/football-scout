@@ -1,0 +1,52 @@
+# Binários compilados
+bin/
+obj/
+*.exe
+*.dll
+
+# Arquivos de usuário Visual Studio
+.vs/
+*.user
+*.suo
+*.userprefs
+
+# Arquivos de usuário do VS Code
+.vscode/
+*.code-workspace
+
+# Arquivos de configuração sensíveis
+appsettings.*.json
+*.config
+*.secret
+
+# Logs
+*.log
+logs/
+
+# Banco de dados local
+*.db
+*.sqlite
+*.sqlite3
+
+# Arquivos temporários
+*.tmp
+*.temp
+
+# Node modules (se houver front-end)
+node_modules/
+
+# Arquivos de cache
+.cache/
+*.cache
+
+# Arquivos de backup
+*.bak
+*.backup
+*.old
+
+# Arquivos do Git
+.git/
+
+# MySQL dump files
+*.sql
+!Database/Schema.sql
