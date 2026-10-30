@@ -14,17 +14,19 @@ namespace FootballScout.Views
             Console.WriteLine("1. Cadastrar Jogador");
             Console.WriteLine("2. Listar Jogadores");
             Console.WriteLine("3. Buscar Jogador por Nome");
-            Console.WriteLine("4. Editar Jogador");
-            Console.WriteLine("5. Excluir Jogador");
-            Console.WriteLine("6. Atualizar Estatísticas");
-            Console.WriteLine("7. Sair");
+            Console.WriteLine("4. Busca Avançada com Filtros");
+            Console.WriteLine("5. Visualizar Buscas Salvas");
+            Console.WriteLine("6. Editar Jogador");
+            Console.WriteLine("7. Excluir Jogador");
+            Console.WriteLine("8. Atualizar Estatísticas");
+            Console.WriteLine("9. Sair");
             Console.WriteLine();
             Console.Write("Escolha uma opção: ");
         }
 
         public static int ObterOpcao()
         {
-            if (int.TryParse(Console.ReadLine(), out int opcao) && opcao >= 1 && opcao <= 7)
+            if (int.TryParse(Console.ReadLine(), out int opcao) && opcao >= 1 && opcao <= 9)
             {
                 return opcao;
             }

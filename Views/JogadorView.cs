@@ -89,13 +89,29 @@ namespace FootballScout.Views
             Console.Write("Clube Atual: ");
             jogador.ClubeAtual = Console.ReadLine() ?? "";
 
-            Console.Write("Valor de Mercado (R$): ");
+            Console.Write("Valor de Mercado (em milhões): ");
             decimal valor;
             while (!decimal.TryParse(Console.ReadLine(), out valor) || valor < 0)
             {
-                Console.Write("Valor inválido. Digite um valor positivo ou zero: ");
+                Console.Write("Valor inválido. Digite um número positivo ou zero: ");
             }
-            jogador.ValorDeMercado = valor;
+
+            Console.Write("Moeda (1-Real, 2-Euro, 3-Dolar): ");
+            int moedaOpcao;
+            while (!int.TryParse(Console.ReadLine(), out moedaOpcao) || moedaOpcao < 1 || moedaOpcao > 3)
+            {
+                Console.Write("Opção inválida. Digite 1, 2 ou 3: ");
+            }
+
+            Moeda moeda = moedaOpcao switch
+            {
+                1 => Moeda.Real,
+                2 => Moeda.Euro,
+                3 => Moeda.Dolar,
+                _ => Moeda.Real
+            };
+
+            jogador.ValorDeMercado = new ValorDeMercado(valor, moeda);
 
             // Solicitar estatísticas opcionais
             Console.Write("\nDeseja cadastrar estatísticas agora? (S/N): ");

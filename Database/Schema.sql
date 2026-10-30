@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS Jogadores (
     Posicao VARCHAR(50),
     PeDominante VARCHAR(20),
     ClubeAtual VARCHAR(100),
-    ValorDeMercado DECIMAL(15, 2) NOT NULL DEFAULT 0.00,
+    ValorMercadoMilhoes DECIMAL(15, 2) NOT NULL DEFAULT 0.00,
+    Moeda VARCHAR(20) NOT NULL DEFAULT 'Real',
     DataCadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

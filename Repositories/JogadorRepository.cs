@@ -28,8 +28,8 @@ namespace FootballScout.Repositories
 
                 // Inserir jogador
                 string sqlJogador = @"
-                    INSERT INTO Jogadores (Nome, Idade, Nacionalidade, Posicao, PeDominante, ClubeAtual, ValorDeMercado)
-                    VALUES (@Nome, @Idade, @Nacionalidade, @Posicao, @PeDominante, @ClubeAtual, @ValorDeMercado);
+                    INSERT INTO Jogadores (Nome, Idade, Nacionalidade, Posicao, PeDominante, ClubeAtual, ValorMercadoMilhoes, Moeda)
+                    VALUES (@Nome, @Idade, @Nacionalidade, @Posicao, @PeDominante, @ClubeAtual, @ValorMercadoMilhoes, @Moeda);
                     SELECT LAST_INSERT_ID();";
 
                 using var cmdJogador = new MySqlCommand(sqlJogador, connection, transaction);
@@ -39,7 +39,8 @@ namespace FootballScout.Repositories
                 cmdJogador.Parameters.AddWithValue("@Posicao", jogador.Posicao);
                 cmdJogador.Parameters.AddWithValue("@PeDominante", jogador.PeDominante);
                 cmdJogador.Parameters.AddWithValue("@ClubeAtual", jogador.ClubeAtual);
-                cmdJogador.Parameters.AddWithValue("@ValorDeMercado", jogador.ValorDeMercado);
+                cmdJogador.Parameters.AddWithValue("@ValorMercadoMilhoes", jogador.ValorDeMercado.ValorEmMilhoes);
+                cmdJogador.Parameters.AddWithValue("@Moeda", jogador.ValorDeMercado.Moeda.ToString());
 
                 var result = cmdJogador.ExecuteScalar();
                 int novoId = Convert.ToInt32(result);
@@ -187,7 +188,7 @@ namespace FootballScout.Repositories
                     UPDATE Jogadores
                     SET Nome = @Nome, Idade = @Idade, Nacionalidade = @Nacionalidade,
                         Posicao = @Posicao, PeDominante = @PeDominante, ClubeAtual = @ClubeAtual,
-                        ValorDeMercado = @ValorDeMercado
+                        ValorMercadoMilhoes = @ValorMercadoMilhoes, Moeda = @Moeda
                     WHERE Id = @Id;";
 
                 using var cmdJogador = new MySqlCommand(sqlJogador, connection, transaction);
@@ -198,7 +199,8 @@ namespace FootballScout.Repositories
                 cmdJogador.Parameters.AddWithValue("@Posicao", jogador.Posicao);
                 cmdJogador.Parameters.AddWithValue("@PeDominante", jogador.PeDominante);
                 cmdJogador.Parameters.AddWithValue("@ClubeAtual", jogador.ClubeAtual);
-                cmdJogador.Parameters.AddWithValue("@ValorDeMercado", jogador.ValorDeMercado);
+                cmdJogador.Parameters.AddWithValue("@ValorMercadoMilhoes", jogador.ValorDeMercado.ValorEmMilhoes);
+                cmdJogador.Parameters.AddWithValue("@Moeda", jogador.ValorDeMercado.Moeda.ToString());
 
                 int rowsAffected = cmdJogador.ExecuteNonQuery();
                 if (rowsAffected == 0)
@@ -296,6 +298,11 @@ namespace FootballScout.Repositories
 
         private Jogador MapearJogador(IDataReader reader)
         {
+            var valorMilhoes = Convert.ToDecimal(reader["ValorMercadoMilhoes"]);
+            var moedaStr = reader["Moeda"]?.ToString() ?? "Real";
+
+            Moeda moeda = Enum.TryParse(moedaStr, out Moeda m) ? m : Moeda.Real;
+
             var jogador = new Jogador
             {
                 Id = Convert.ToInt32(reader["Id"]),
@@ -305,7 +312,7 @@ namespace FootballScout.Repositories
                 Posicao = reader["Posicao"]?.ToString() ?? "",
                 PeDominante = reader["PeDominante"]?.ToString() ?? "",
                 ClubeAtual = reader["ClubeAtual"]?.ToString() ?? "",
-                ValorDeMercado = Convert.ToDecimal(reader["ValorDeMercado"])
+                ValorDeMercado = new ValorDeMercado(valorMilhoes, moeda)
             };
 
             // Mapear estatísticas se existirem

@@ -10,7 +10,7 @@ namespace FootballScout.Models
         public string Posicao { get; set; }
         public string PeDominante { get; set; }
         public string ClubeAtual { get; set; }
-        public decimal ValorDeMercado { get; set; }
+        public ValorDeMercado ValorDeMercado { get; set; }
         public EstatisticasJogador? Estatisticas { get; set; }
 
         // Validações
@@ -30,9 +30,9 @@ namespace FootballScout.Models
                 return false;
             }
 
-            if (ValorDeMercado < 0)
+            if (ValorDeMercado == null || ValorDeMercado.ValorEmMilhoes < 0)
             {
-                mensagemErro = "O valor de mercado não pode ser negativo.";
+                mensagemErro = "O valor de mercado não pode ser negativo ou nulo.";
                 return false;
             }
 
